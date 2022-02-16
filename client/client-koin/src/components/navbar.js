@@ -1,24 +1,54 @@
-import React from "react";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { cartFetch } from "../store/actionCreator/cartAction";
 
 function NavBar() {
+  const { product, loading, error } = useSelector(
+    (state) => state.cartReducers
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(cartFetch());
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Koin Works</Navbar.Brand>
+        <Navbar.Brand href="#home">
+          <Link
+            to="/"
+            style={{
+              color: "white",
+            }}
+          >
+            Koin Works
+          </Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
           <Nav>
             <Nav.Link eventKey={2} href="">
-              <button class="btn btn-outline-light" type="button">
-                <i class="bi-cart-fill me-1"></i>
-                Cart
-                <span class="badge bg-dark text-white ms-1 rounded-pill">
-                  4
-                </span>
-              </button>
+              <Link
+                to="/cart"
+                style={{
+                  color: "white",
+                }}
+              >
+                <button class="btn btn-outline-light" type="button">
+                  <i class="bi-cart-fill me-1"></i>
+                  Cart
+                  <span class="badge bg-dark text-white ms-1 rounded-pill">
+                    {product.countCart}
+                  </span>
+                </button>
+              </Link>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

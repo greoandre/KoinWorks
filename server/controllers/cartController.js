@@ -27,9 +27,9 @@ class cartController {
   static async addCart(req, res, next) {
     try {
       const { id } = req.params;
-      const response = await Product.findByPk(id);
+      const resp = await Product.findByPk(id);
 
-      if (!response) {
+      if (!resp) {
         throw { name: "notFound" };
       }
 
@@ -59,28 +59,43 @@ class cartController {
         );
       }
 
-      res.status(201).json({ msg: `success add ${response.name} to cart` });
+      const response = await Cart.findAll({
+        include: [
+          {
+            model: Product,
+          },
+        ],
+      });
+
+      let countCart = 0;
+
+      response.map((e) => {
+        countCart = countCart + e.count;
+      });
+
+      res.status(200).json({ response, countCart });
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
 
-  static async removeCart(req, res, next) {
+  static async decreaseCart(req, res, next) {
     try {
       const { ProductId } = req.params;
 
-      const response = await Cart.findOne({
+      const resp = await Cart.findOne({
         where: {
           ProductId,
         },
         include: Product,
       });
 
-      if (!response) {
+      if (!resp) {
         throw { name: "notFound" };
       }
 
-      if (response.count == 1) {
+      if (resp.count == 1) {
         await Cart.destroy({
           where: {
             ProductId,
@@ -99,9 +114,62 @@ class cartController {
         );
       }
 
-      res
-        .status(200)
-        .json({ msg: `success remove ${response.Product.name} from cart` });
+      const response = await Cart.findAll({
+        include: [
+          {
+            model: Product,
+          },
+        ],
+      });
+
+      let countCart = 0;
+
+      response.map((e) => {
+        countCart = countCart + e.count;
+      });
+
+      res.status(200).json({ response, countCart });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async removeCart(req, res, next) {
+    try {
+      const { ProductId } = req.params;
+
+      const resp = await Cart.findOne({
+        where: {
+          ProductId,
+        },
+        include: Product,
+      });
+
+      if (!resp) {
+        throw { name: "notFound" };
+      }
+
+      await Cart.destroy({
+        where: {
+          ProductId,
+        },
+      });
+
+      const response = await Cart.findAll({
+        include: [
+          {
+            model: Product,
+          },
+        ],
+      });
+
+      let countCart = 0;
+
+      response.map((e) => {
+        countCart = countCart + e.count;
+      });
+
+      res.status(200).json({ response, countCart });
     } catch (err) {
       next(err);
     }

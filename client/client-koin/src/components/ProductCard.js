@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { cartFetch, addProductCart } from "../store/actionCreator/cartAction";
 
-function ProducCard() {
+function ProducCard({ product }) {
+  const dispatch = useDispatch();
+
+  const handleAddCart = (ProductId) => {
+    dispatch(addProductCart(ProductId));
+  };
+
   return (
     <>
       <div class="cards">
         <div class="col-md-3">
           <div class="card-sl">
             <div class="card-image">
-              <img src="https://images.pexels.com/photos/1149831/pexels-photo-1149831.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
+              <img src={product.display} />
             </div>
-            <div class="card-heading">
-              N-ISO Whey Protein Hydrolyzed Isolated 100%
-            </div>
+            <div class="card-heading">{product.name}</div>
 
-            <div class="card-text">$67,400</div>
-            <a href="#" class="card-button">
+            <div class="card-text">Rp {product.price}</div>
+
+            <Button
+              style={{ marginBottom: "10px", marginTop: "10px" }}
+              onClick={() => handleAddCart(product.id)}
+              variant="primary"
+            >
               Add to Cart
-            </a>
+            </Button>
           </div>
         </div>
       </div>
