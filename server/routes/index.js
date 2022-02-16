@@ -8,7 +8,8 @@ const errorHandler = require("../middlewares/errorHandler");
 router.get("/products", productController.showProduct);
 router.get("/cart", cartController.showCart);
 router.post("/cart/:id", cartController.addCart);
-router.delete("/cart/:ProductId", cartController.removeCart);
+router.delete("/cart/:ProductId", cartController.decreaseCart);
+router.delete("/remove-cart/:ProductId", cartController.removeCart);
 
 router.use(errorHandler.errHandler);
 
