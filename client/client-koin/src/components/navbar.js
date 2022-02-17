@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { cartFetch } from "../store/actionCreator/cartAction";
@@ -15,10 +15,11 @@ function NavBar() {
     dispatch(cartFetch());
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Spinner animation="border" />;
+  if (error) return <Spinner animation="grow" variant="danger" />;
+
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <Navbar.Brand href="#home">
           <Link

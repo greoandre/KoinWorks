@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { cartFetch, addProductCart } from "../store/actionCreator/cartAction";
+import { addProductCart } from "../store/actionCreator/cartAction";
 
 function ProducCard({ product }) {
   const dispatch = useDispatch();

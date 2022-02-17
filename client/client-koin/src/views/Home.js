@@ -3,6 +3,8 @@ import { Row } from "react-bootstrap";
 import ProductCard from "../components/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { productFetch } from "../store/actionCreator/productAction";
+import LoadingScreen from "../components/LoadingScreen";
+import ErrorScreen from "../components/ErrorScreen";
 
 function Home() {
   const { product, loading, error } = useSelector(
@@ -15,8 +17,8 @@ function Home() {
     dispatch(productFetch());
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <LoadingScreen />;
+  if (error) return <ErrorScreen />;
 
   return (
     <>

@@ -7,6 +7,7 @@ import {
   SET_ERROR_CART,
 } from "../actionTypes";
 import Axios from "axios";
+import Swal from "sweetalert2";
 
 const baseUrl = "http://localhost:3001";
 
@@ -74,6 +75,14 @@ export const addProductCart = (id) => {
       dispatch(setLoading(true));
       const res = await Axios.post(`${baseUrl}/cart/${id}`);
       dispatch(addCart(res.data));
+      console.log(res.data, "<<<< ISI APA?");
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Success add an item to cart!",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     } catch (err) {
       dispatch(setError(err));
     } finally {
@@ -89,6 +98,13 @@ export const decreaseProductCart = (id) => {
       dispatch(setLoading(true));
       const res = await Axios.delete(`${baseUrl}/cart/${id}`);
       dispatch(decreaseCart(res.data));
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Success remove an item to cart!",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     } catch (err) {
       dispatch(setError(err));
     } finally {
